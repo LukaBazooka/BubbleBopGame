@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BubbleLauncher : MonoBehaviour
+public class BubbleEmitter : MonoBehaviour
 {
     public GameObject bubblePrefab; // Assign your bubble prefab in the Inspector
     public Transform shootPoint;   // Assign the shootPoint GameObject in the Inspector
@@ -25,14 +25,27 @@ public class BubbleLauncher : MonoBehaviour
             return;
         }
 
-        // Instantiate the bubble at the shootPoint's position and rotation
-        GameObject bubble = Instantiate(bubblePrefab, shootPoint.position, shootPoint.rotation);
+        // Calculate the direction from the launcher to the mouse position
+        Vector3 mousePosition = Input.mousePosition;
+        mousePosition.z = Camera.main.WorldToScreenPoint(shootPoint.position).z; // Match depth of the shootPoint
+        Vector3 worldMousePosition = Camera.main.ScreenToWorldPoint(mousePosition);
 
-        // Get the Rigidbody of the bubble and add force to it
+        // Calculate the direction vector
+        Vector3 direction = (worldMousePosition - shootPoint.position);
+        direction.y = 0; // Ignore the Y-axis
+        direction = direction.normalized; // Normalize the direction to ensure consistent force
+
+        // Calculate rotation to face the direction
+        Quaternion rotation = Quaternion.LookRotation(direction);
+
+        // Instantiate the bubble at the shootPoint's position with the calculated rotation
+        GameObject bubble = Instantiate(bubblePrefab, shootPoint.position, rotation);
+
+        // Get the Rigidbody of the bubble and add force in the direction of the mouse
         Rigidbody bubbleRb = bubble.GetComponent<Rigidbody>();
         if (bubbleRb != null)
         {
-            bubbleRb.AddForce(shootPoint.forward * shootForce);
+            bubbleRb.AddForce(direction * shootForce);
         }
         else
         {
