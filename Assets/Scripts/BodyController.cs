@@ -9,6 +9,13 @@ public class BodyController : MonoBehaviour
     public float maxOffset = 0.5f; // Maximum offset for sway
     public float resetSpeed = 2.0f; // Speed to reset to base position
     private bool isVertical = false; // Track vertical state
+    public float noiseScale = 0.01f; // Scale of the noise effect
+    public float noiseSpeed = 0.5f; // Speed of the noise effect
+    public float wobbleAmplitude = 0.02f; // Amplitude of the wobble
+    public float wobbleFrequency = 2.0f; // Frequency of the wobble
+    public float wobbleDecay = 0.98f; // Decay factor for the wobble
+    private bool isMoving = false; // Track if the player is moving
+    private float stopTime; // Time when movement stopped
 
     // Capture original positions at start
     void Start()
@@ -36,6 +43,23 @@ public class BodyController : MonoBehaviour
     void Update()
     {
         Vector3 movementDirection = CalculateMovementDirection(); // Calculate movement direction
+        bool currentlyMoving = movementDirection.sqrMagnitude > 0.01f;
+
+        if (currentlyMoving)
+        {
+            if (!isMoving)
+            {
+                isMoving = true;
+                isVertical = false; // Disable vertical state when moving
+            }
+        }
+        else if (isMoving)
+        {
+            isMoving = false;
+            stopTime = Time.time; // Record the time when movement stopped
+            isVertical = true; // Immediately transition to idle wobble
+        }
+
         RotateModelTowards(movementDirection); // Rotate model to face movement direction
 
         for (int groupIndex = 0; groupIndex < groupStartIndices.Length; groupIndex++)
@@ -50,18 +74,28 @@ public class BodyController : MonoBehaviour
                 Vector3 localOffset = new Vector3(
                     Mathf.Sin(adjustedAngle * Mathf.Deg2Rad) * maxOffset,
                     0,
-                    Mathf.Cos(adjustedAngle * Mathf.Deg2Rad) * maxOffset // Invert Z component
+                    Mathf.Cos(adjustedAngle * Mathf.Deg2Rad) * maxOffset
                 ) * delayFactor;
 
                 // Calculate target position relative to original position and player's forward direction
                 Vector3 targetPosition = originalPositions[i] + transform.TransformDirection(localOffset);
+
+                // Add Perlin noise for subtle wiggly effect
+                float noiseX = (Mathf.PerlinNoise(Time.time * noiseSpeed + i, 0) - 0.5f) * noiseScale;
+                float noiseZ = (Mathf.PerlinNoise(0, Time.time * noiseSpeed + i) - 0.5f) * noiseScale;
+                targetPosition.x += noiseX;
+                targetPosition.z += noiseZ;
+
                 Vector3 newPosition = bones[i].localPosition;
 
                 if (isVertical)
                 {
-                    // Reset to original position
-                    newPosition.x = Mathf.Lerp(newPosition.x, originalPositions[i].x, Time.deltaTime * resetSpeed);
-                    newPosition.z = Mathf.Lerp(newPosition.z, originalPositions[i].z, Time.deltaTime * resetSpeed);
+                    // Overshoot and recovery with exponential easing
+                    float elapsedTime = Time.time - stopTime;
+                    float overshoot = Mathf.Sin(elapsedTime * wobbleFrequency + i) * wobbleAmplitude * Mathf.Exp(-elapsedTime * (1 - wobbleDecay));
+                    float easingFactor = 1 - Mathf.Exp(-resetSpeed * Time.deltaTime); // Exponential easing
+                    newPosition.x = Mathf.Lerp(newPosition.x, originalPositions[i].x + overshoot, easingFactor);
+                    newPosition.z = Mathf.Lerp(newPosition.z, originalPositions[i].z + overshoot, easingFactor);
                 }
                 else
                 {
