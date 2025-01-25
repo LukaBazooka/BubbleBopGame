@@ -1,6 +1,6 @@
 //Maya ASCII 2024 scene
 //Name: nail_v001.ma
-//Last modified: Fri, Jan 24, 2025 09:16:21 PM
+//Last modified: Fri, Jan 24, 2025 09:34:53 PM
 //Codeset: 1252
 requires maya "2024";
 requires "mtoa" "5.3.5.2";
@@ -11,7 +11,7 @@ fileInfo "product" "Maya 2024";
 fileInfo "version" "2024";
 fileInfo "cutIdentifier" "202310181224-69282f2959";
 fileInfo "osv" "Windows 11 Education v2009 (Build: 22631)";
-fileInfo "UUID" "76B7BCAE-4B36-F033-D893-FC910FBFC1EF";
+fileInfo "UUID" "492D1D1D-4F1B-B512-D166-DCBED1467118";
 fileInfo "license" "education";
 createNode transform -s -n "persp";
 	rename -uid "525265F4-4E1B-3852-DF18-D78CB46FE33D";
@@ -452,7 +452,7 @@ createNode script -n "sceneConfigurationScriptNode";
 	setAttr ".b" -type "string" "playbackOptions -min 1 -max 120 -ast 1 -aet 200 ";
 	setAttr ".st" 6;
 createNode mayaUsdLayerManager -n "mayaUsdLayerManager1";
-	rename -uid "2611D914-4857-2FE6-0486-EC8ED304B454";
+	rename -uid "AA5E0153-4868-5D2E-CDCC-B9BCDC3DDE34";
 	setAttr ".sst" -type "string" "";
 select -ne :time1;
 	setAttr ".o" 1;
