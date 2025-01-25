@@ -160,6 +160,9 @@ MonoBehaviour:
   bubbleLayerMask:
     serializedVersion: 2
     m_Bits: 64
+  receiverLayerMask:
+    serializedVersion: 2
+    m_Bits: 128
   impactParticles: {fileID: 8545005510970988537}
 --- !u!120 &7660926527086232218
 LineRenderer:

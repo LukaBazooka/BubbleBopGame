@@ -4,44 +4,8 @@ using UnityEngine;
 
 public class LaserReceiver : MonoBehaviour
 {
-    public Transform laserOrigin; // Origin of the redirected laser
-    private LaserOrigin laserOriginScript; // Reference to the LaserOrigin script
-
-    private void Start()
+    public void ActivateSignal()
     {
-        // Cache the LaserOrigin script
-        laserOriginScript = GetComponent<LaserOrigin>();
-
-        if (laserOrigin == null)
-        {
-            Debug.LogError("LaserReceiver requires a laserOrigin Transform!");
-        }
-
-        if (laserOriginScript == null)
-        {
-            Debug.LogError("LaserReceiver requires a LaserOrigin script!");
-        }
-
-        // Disable the LaserOrigin script by default
-        if (laserOriginScript != null)
-        {
-            laserOriginScript.enabled = false;
-        }
-    }
-
-    public void ActivateLaserOrigin()
-    {
-        if (laserOriginScript != null)
-        {
-            laserOriginScript.enabled = true;
-        }
-    }
-
-    public void DeactivateLaserOrigin()
-    {
-        if (laserOriginScript != null)
-        {
-            laserOriginScript.enabled = false;
-        }
+        Debug.Log("LaserReceiver activated!");
     }
 }

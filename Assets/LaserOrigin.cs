@@ -8,6 +8,7 @@ public class LaserOrigin : MonoBehaviour
     public float maxLaserDistance = 50f; // Maximum distance of the laser
     public LayerMask hitLayerMask; // Layers the laser can hit
     public LayerMask bubbleLayerMask; // Layer mask for bubbles
+    public LayerMask receiverLayerMask; // Layer mask for receivers
     public GameObject impactParticles; // GameObject for laser impact particles
 
     private LineRenderer lineRenderer;
@@ -46,6 +47,20 @@ public class LaserOrigin : MonoBehaviour
 
         bool hitSomething = false;
 
+        // Check for collisions with objects in the receiverLayerMask
+        if (Physics.Raycast(laserOrigin.position, direction, out hit, maxLaserDistance, receiverLayerMask))
+        {
+            hitSomething = true;
+
+            // Call ActivateSignal on the receiver
+            LaserReceiver receiver = hit.collider.GetComponent<LaserReceiver>();
+            if (receiver != null)
+            {
+                receiver.ActivateSignal();
+
+            }
+        }
+
         // Check for collisions with objects in the main hitLayerMask
         if (Physics.Raycast(laserOrigin.position, direction, out hit, maxLaserDistance, hitLayerMask))
         {
@@ -61,7 +76,7 @@ public class LaserOrigin : MonoBehaviour
                 hit = bubbleHit;
                 hitSomething = true;
 
-                // Enable the LaserOrigin, LineRenderer, impact particles, and bubble light on the bubble
+                // Enable the LaserOrigin, LineRenderer, and impact particles on the bubble
                 EnableBubbleLaser(bubbleHit.collider.gameObject);
             }
         }
@@ -110,7 +125,7 @@ public class LaserOrigin : MonoBehaviour
         {
             DisableLastBubbleLaser(); // Disable the previously hit bubble
 
-            // Get the LaserOrigin, LineRenderer, BubbleLight, and ParticleSystem GameObject on the bubble
+            // Get the LaserOrigin, LineRenderer, and ParticleSystem GameObject on the bubble
             LaserOrigin bubbleLaserOrigin = bubble.GetComponent<LaserOrigin>();
             LineRenderer bubbleLineRenderer = bubble.GetComponent<LineRenderer>();
             GameObject bubbleParticles = bubble.GetComponentInChildren<ParticleSystem>()?.gameObject;
@@ -144,7 +159,7 @@ public class LaserOrigin : MonoBehaviour
     {
         if (lastHitBubble != null)
         {
-            // Get the LaserOrigin, LineRenderer, BubbleLight, and ParticleSystem GameObject on the last hit bubble
+            // Get the LaserOrigin, LineRenderer, and ParticleSystem GameObject on the last hit bubble
             LaserOrigin bubbleLaserOrigin = lastHitBubble.GetComponent<LaserOrigin>();
             LineRenderer bubbleLineRenderer = lastHitBubble.GetComponent<LineRenderer>();
             GameObject bubbleParticles = lastHitBubble.GetComponentInChildren<ParticleSystem>()?.gameObject;
