@@ -387,6 +387,9 @@ MonoBehaviour:
   bubbleLayerMask:
     serializedVersion: 2
     m_Bits: 64
+  receiverLayerMask:
+    serializedVersion: 2
+    m_Bits: 128
   impactParticles: {fileID: 4612962977561236394}
 --- !u!120 &944623421699904461
 LineRenderer:
@@ -505,13 +508,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bobbingSpeed: 1
-  bobbingHeight: 0.5
+  bobbingHeight: 0.1
   popTime: 15
   popEffect: {fileID: 9010352299326436740, guid: 6025012c8b612a9409b453e03da5b730,
     type: 3}
   wallsLayer:
     serializedVersion: 2
     m_Bits: 8
+  scaleDuration: 1
 --- !u!54 &2443484541181949779
 Rigidbody:
   m_ObjectHideFlags: 0

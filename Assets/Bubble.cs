@@ -15,12 +15,38 @@ public class Bubble : MonoBehaviour
     [Header("Collision Settings")]
     public LayerMask wallsLayer; // LayerMask for walls (set this to the Walls layer in the inspector)
 
+    [Header("Scaling Settings")]
+    public float scaleDuration = 1f; // Duration of the scaling animation in seconds
+
     private float initialY;
+    private bool isScaling = true;
+    private Transform meshTransform;
 
     void Start()
     {
+        // Get the transform of the mesh (assumes the mesh is a child or the same GameObject)
+        MeshRenderer meshRenderer = GetComponentInChildren<MeshRenderer>();
+        if (meshRenderer != null)
+        {
+            meshTransform = meshRenderer.transform;
+        }
+        else
+        {
+            Debug.LogError("No MeshRenderer found! Ensure the bubble has a mesh.");
+            return;
+        }
+
+        // Set the initial scale of the mesh to 0
+        if (meshTransform != null)
+        {
+            meshTransform.localScale = Vector3.zero;
+        }
+
         // Store the initial Y position
         initialY = transform.position.y;
+
+        // Start scaling animation
+        StartCoroutine(ScaleUp());
 
         // Ensure the Rigidbody is not affected by gravity
         Rigidbody rb = GetComponent<Rigidbody>();
@@ -35,16 +61,16 @@ public class Bubble : MonoBehaviour
 
     void Update()
     {
-        // Bobbing motion relative to the current position
-        float newY = initialY + Mathf.Sin(Time.time * bobbingSpeed) * bobbingHeight;
-        transform.position = new Vector3(transform.position.x, newY, transform.position.z);
+        if (!isScaling)
+        {
+            // Bobbing motion relative to the base Y position
+            float newY = initialY + Mathf.Sin(Time.time * bobbingSpeed) * bobbingHeight;
+            transform.position = new Vector3(transform.position.x, newY, transform.position.z);
+        }
     }
 
     private void OnCollisionEnter(Collision collision)
     {
-        // Update the initialY to the current Y position if the bubble moves
-        initialY = transform.position.y;
-
         // Check if the collided object is on the "Walls" layer
         if (((1 << collision.gameObject.layer) & wallsLayer) != 0)
         {
@@ -62,5 +88,32 @@ public class Bubble : MonoBehaviour
 
         // Destroy the bubble GameObject
         Destroy(gameObject);
+    }
+
+    private System.Collections.IEnumerator ScaleUp()
+    {
+        float elapsedTime = 0f;
+        Vector3 targetScale = Vector3.one;
+
+        while (elapsedTime < scaleDuration)
+        {
+            // Smoothly scale the mesh up
+            float t = elapsedTime / scaleDuration;
+            if (meshTransform != null)
+            {
+                meshTransform.localScale = Vector3.Lerp(Vector3.zero, targetScale, t);
+            }
+
+            elapsedTime += Time.deltaTime;
+            yield return null;
+        }
+
+        // Ensure the final scale is exactly 100%
+        if (meshTransform != null)
+        {
+            meshTransform.localScale = targetScale;
+        }
+
+        isScaling = false;
     }
 }
