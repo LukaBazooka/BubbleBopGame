@@ -2,12 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class LaserController : MonoBehaviour
+public class LaserOrigin : MonoBehaviour
 {
-    public Transform laserOrigin; // Start position of the laser
+    public Transform laserOrigin; // Start position of the primary laser
     public float maxLaserDistance = 50f; // Maximum distance of the laser
     public LayerMask hitLayerMask; // Layers the laser can hit
     public ParticleSystem impactParticles; // Particle system for laser impact
+
     private LineRenderer lineRenderer;
 
     void Start()
@@ -19,7 +20,7 @@ public class LaserController : MonoBehaviour
             Debug.LogError("LineRenderer component not found!");
         }
 
-        // Make sure the particle system is initially disabled
+        // Ensure the particle system is initially disabled
         if (impactParticles != null)
         {
             impactParticles.Stop();
@@ -28,7 +29,7 @@ public class LaserController : MonoBehaviour
 
     void Update()
     {
-        // Update the laser visuals
+        // Update the primary laser visuals
         UpdateLaser();
     }
 
@@ -54,6 +55,17 @@ public class LaserController : MonoBehaviour
                 if (!impactParticles.isPlaying)
                 {
                     impactParticles.Play();
+                }
+            }
+
+            // Check if the object hit is in the "Bubble" layer
+            if (hit.collider.gameObject.layer == LayerMask.NameToLayer("Bubble"))
+            {
+                // Activate the LaserOrigin script on the Bubble object (if it exists)
+                LaserOrigin bubbleLaser = hit.collider.GetComponent<LaserOrigin>();
+                if (bubbleLaser != null)
+                {
+                    bubbleLaser.enabled = true;
                 }
             }
         }

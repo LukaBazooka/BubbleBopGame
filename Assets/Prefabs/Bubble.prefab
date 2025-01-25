@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &389133495595716467
+--- !u!1 &2953165628208332846
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,7 +8,7 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 447393882430806549}
+  - component: {fileID: 4872515613774015557}
   m_Layer: 0
   m_Name: LaserPoint
   m_TagString: Untagged
@@ -16,22 +16,22 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &447393882430806549
+--- !u!4 &4872515613774015557
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 389133495595716467}
+  m_GameObject: {fileID: 2953165628208332846}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0.436}
+  m_LocalPosition: {x: 0, y: 0, z: 0.33}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 562320632968458665}
+  m_Father: {fileID: 4711680535190168587}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &5778470990862314572
+--- !u!1 &4390220957938253613
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -39,51 +39,52 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 562320632968458665}
-  - component: {fileID: 3681792853670693940}
-  - component: {fileID: 154268313631589282}
-  - component: {fileID: 3687665333550870248}
-  - component: {fileID: 1352627342125989775}
-  - component: {fileID: 7660926527086232218}
-  m_Layer: 0
-  m_Name: LaserProjector
+  - component: {fileID: 4711680535190168587}
+  - component: {fileID: 7389316780297003165}
+  - component: {fileID: 4995718715210854062}
+  - component: {fileID: 9106822110439395948}
+  - component: {fileID: 8793150393215190721}
+  - component: {fileID: 4453720797485696016}
+  - component: {fileID: 6897107191813529239}
+  m_Layer: 3
+  m_Name: Bubble
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &562320632968458665
+--- !u!4 &4711680535190168587
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5778470990862314572}
+  m_GameObject: {fileID: 4390220957938253613}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.00057661533, y: 0.34, z: -0.051411763}
+  m_LocalPosition: {x: 2.61, y: 0.48, z: 0.61}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 6817741355725333382}
-  - {fileID: 447393882430806549}
+  - {fileID: 1397908519616344643}
+  - {fileID: 4872515613774015557}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!33 &3681792853670693940
+--- !u!33 &7389316780297003165
 MeshFilter:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5778470990862314572}
-  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
---- !u!23 &154268313631589282
+  m_GameObject: {fileID: 4390220957938253613}
+  m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!23 &4995718715210854062
 MeshRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5778470990862314572}
+  m_GameObject: {fileID: 4390220957938253613}
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
@@ -119,13 +120,13 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!65 &3687665333550870248
-BoxCollider:
+--- !u!135 &9106822110439395948
+SphereCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5778470990862314572}
+  m_GameObject: {fileID: 4390220957938253613}
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
@@ -138,36 +139,29 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 1}
+  m_Radius: 0.5
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &1352627342125989775
+--- !u!114 &8793150393215190721
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5778470990862314572}
-  m_Enabled: 1
+  m_GameObject: {fileID: 4390220957938253613}
+  m_Enabled: 0
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 031dd43564159ea4492c7de18d941fc7, type: 3}
+  m_Script: {fileID: 11500000, guid: f3a80185a7ccd1046aefa735eb449cad, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  laserOrigin: {fileID: 447393882430806549}
-  maxLaserDistance: 50
-  hitLayerMask:
-    serializedVersion: 2
-    m_Bits: 8
-  impactParticles: {fileID: 8545005510970988537}
-  secondaryLaserPrefab: {fileID: 4390220957938253613, guid: b2eb09219c930a045b6759df59937b8f,
-    type: 3}
---- !u!120 &7660926527086232218
+  laserOrigin: {fileID: 4872515613774015557}
+--- !u!120 &4453720797485696016
 LineRenderer:
   serializedVersion: 2
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5778470990862314572}
+  m_GameObject: {fileID: 4390220957938253613}
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
@@ -212,8 +206,8 @@ LineRenderer:
       serializedVersion: 2
       m_Curve:
       - serializedVersion: 3
-        time: 0.06116104
-        value: 0.12888908
+        time: 0.6573105
+        value: 0.19470215
         inSlope: 0
         outSlope: 0
         tangentMode: 0
@@ -250,7 +244,7 @@ LineRenderer:
       atime6: 0
       atime7: 0
       m_Mode: 0
-      m_ColorSpace: 0
+      m_ColorSpace: -1
       m_NumColorKeys: 2
       m_NumAlphaKeys: 2
     numCornerVertices: 0
@@ -264,13 +258,31 @@ LineRenderer:
   m_UseWorldSpace: 1
   m_Loop: 0
   m_ApplyActiveColorSpace: 1
---- !u!1001 &3098076298162473473
+--- !u!114 &6897107191813529239
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4390220957938253613}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 031dd43564159ea4492c7de18d941fc7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  laserOrigin: {fileID: 4872515613774015557}
+  maxLaserDistance: 50
+  hitLayerMask:
+    serializedVersion: 2
+    m_Bits: 8
+  impactParticles: {fileID: 4282590082321909308}
+--- !u!1001 &7423539924995857348
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 562320632968458665}
+    m_TransformParent: {fileID: 4711680535190168587}
     m_Modifications:
     - target: {fileID: 7473266157311396785, guid: 5a441d95867b3b640b250cdfde775e2b,
         type: 3}
@@ -290,7 +302,7 @@ PrefabInstance:
     - target: {fileID: 8386802423824886151, guid: 5a441d95867b3b640b250cdfde775e2b,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 2.65
+      value: 3.3
       objectReference: {fileID: 0}
     - target: {fileID: 8386802423824886151, guid: 5a441d95867b3b640b250cdfde775e2b,
         type: 3}
@@ -332,15 +344,15 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5a441d95867b3b640b250cdfde775e2b, type: 3}
---- !u!4 &6817741355725333382 stripped
+--- !u!4 &1397908519616344643 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8386802423824886151, guid: 5a441d95867b3b640b250cdfde775e2b,
     type: 3}
-  m_PrefabInstance: {fileID: 3098076298162473473}
+  m_PrefabInstance: {fileID: 7423539924995857348}
   m_PrefabAsset: {fileID: 0}
---- !u!198 &8545005510970988537 stripped
+--- !u!198 &4282590082321909308 stripped
 ParticleSystem:
   m_CorrespondingSourceObject: {fileID: 6659529481870794232, guid: 5a441d95867b3b640b250cdfde775e2b,
     type: 3}
-  m_PrefabInstance: {fileID: 3098076298162473473}
+  m_PrefabInstance: {fileID: 7423539924995857348}
   m_PrefabAsset: {fileID: 0}
