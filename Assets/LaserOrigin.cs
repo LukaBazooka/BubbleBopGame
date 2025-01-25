@@ -131,6 +131,15 @@ public class LaserOrigin : MonoBehaviour
             GameObject bubbleParticles = bubble.GetComponentInChildren<ParticleSystem>()?.gameObject;
             GameObject bubbleLight = bubble.transform.Find("BubbleLight")?.gameObject; // Find BubbleLight in the bubble hierarchy
 
+            // Stop all forces on the bubble
+            Rigidbody bubbleRigidbody = bubble.GetComponent<Rigidbody>();
+            if (bubbleRigidbody != null)
+            {
+                bubbleRigidbody.velocity = Vector3.zero;
+                bubbleRigidbody.angularVelocity = Vector3.zero;
+                bubbleRigidbody.isKinematic = true; // Optionally make it kinematic to stop forces from being reapplied
+            }
+
             if (bubbleLaserOrigin != null && bubbleLineRenderer != null)
             {
                 // Enable the LaserOrigin and LineRenderer
@@ -155,6 +164,7 @@ public class LaserOrigin : MonoBehaviour
         }
     }
 
+
     void DisableLastBubbleLaser()
     {
         if (lastHitBubble != null)
@@ -164,6 +174,13 @@ public class LaserOrigin : MonoBehaviour
             LineRenderer bubbleLineRenderer = lastHitBubble.GetComponent<LineRenderer>();
             GameObject bubbleParticles = lastHitBubble.GetComponentInChildren<ParticleSystem>()?.gameObject;
             GameObject bubbleLight = lastHitBubble.transform.Find("BubbleLight")?.gameObject; // Find BubbleLight in the bubble hierarchy
+
+            // Resume forces on the bubble
+            Rigidbody bubbleRigidbody = lastHitBubble.GetComponent<Rigidbody>();
+            if (bubbleRigidbody != null)
+            {
+                bubbleRigidbody.isKinematic = false; // Allow the Rigidbody to be affected by forces again
+            }
 
             if (bubbleLaserOrigin != null && bubbleLineRenderer != null)
             {
@@ -188,4 +205,5 @@ public class LaserOrigin : MonoBehaviour
             lastHitBubble = null;
         }
     }
+
 }
