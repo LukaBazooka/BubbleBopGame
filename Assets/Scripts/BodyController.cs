@@ -17,6 +17,7 @@ public class BodyController : MonoBehaviour
     public float wobbleDecay = 0.98f; // Decay factor for the wobble
     private bool isMoving = false; // Track if the player is moving
     private float stopTime; // Time when movement stopped
+    public bool hidden = true;
 
     // Capture original positions at start
     void Start()
@@ -61,7 +62,6 @@ public class BodyController : MonoBehaviour
                 isVertical = false; // Disable vertical state when moving
             }
             animator.SetBool("Walking", true); // Set Walking to true
-            Debug.Log("Walking Parameter: " + animator.GetBool("Walking")); // Debug log
         }
         else if (isMoving)
         {

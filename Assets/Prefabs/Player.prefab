@@ -61,7 +61,7 @@ GameObject:
   - component: {fileID: 2914275002236155278}
   m_Layer: 0
   m_Name: Body Container
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -126,6 +126,7 @@ MonoBehaviour:
   wobbleAmplitude: 0.01
   wobbleFrequency: 3
   wobbleDecay: 0.98
+  hidden: 1
 --- !u!136 &8121517201436262329
 CapsuleCollider:
   m_ObjectHideFlags: 0
