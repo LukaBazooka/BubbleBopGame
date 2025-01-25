@@ -157,9 +157,10 @@ MonoBehaviour:
   hitLayerMask:
     serializedVersion: 2
     m_Bits: 8
+  bubbleLayerMask:
+    serializedVersion: 2
+    m_Bits: 64
   impactParticles: {fileID: 8545005510970988537}
-  secondaryLaserPrefab: {fileID: 4390220957938253613, guid: b2eb09219c930a045b6759df59937b8f,
-    type: 3}
 --- !u!120 &7660926527086232218
 LineRenderer:
   serializedVersion: 2
