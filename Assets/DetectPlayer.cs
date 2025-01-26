@@ -1,22 +1,25 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI; // Ensure you have this namespace for NavMeshAgent
 
 public class DetectPlayer : MonoBehaviour
 {
     public float visionRange = 10f; // How far the enemy can see
     public Transform rayOrigin;    // The starting point for the raycast (e.g., enemy's eyes)
 
-    public PlayerController playerControls;
-    public BodyController bodyControls;
+    private PlayerController playerControls;
 
     public SpotlightScript spotlight;
 
-    public GameObject player;
+    private GameObject player;
+    private BodyController playerBody;
     public float duration = 2f;
     public RandomMovement randomMovt;
 
     private Animator animator; // Reference to the Animator component
+    private NavMeshAgent navAgent; // Reference to the NavMeshAgent component
+    private bool canSeePlayer = false; // This determines if the player is in the enemy's vision
 
     private void Start()
     {
@@ -26,41 +29,70 @@ public class DetectPlayer : MonoBehaviour
         {
             Debug.LogWarning("No Animator component found on this GameObject.");
         }
+
+        navAgent = GetComponent<NavMeshAgent>();
+        if (navAgent == null)
+        {
+            Debug.LogWarning("No NavMeshAgent component found on this GameObject.");
+        }
+
+        // Find the player object by tag
+        player = GameObject.FindWithTag("Player");
+        if (player == null)
+        {
+            Debug.LogWarning("No GameObject with tag 'Player' found in the scene.");
+        }
+
+        playerBody = player.GetComponent<BodyController>();
+        playerControls = player.transform.parent.GetComponent<PlayerController>();
     }
 
     private void Update()
     {
         if (spotlight.playerDetected)
         {
-            KillPlayer();
+            canSeePlayer = true;
+        }
+        else {
+            canSeePlayer = false;
+        }
+    }
+
+    // Move towards the player if they are not hidden
+    private void FixedUpdate() {
+        if (!playerBody.hidden && Vector3.Distance(transform.position, player.transform.position) < 40f) {
+            navAgent.SetDestination(player.transform.position);
         }
     }
 
     private void KillPlayer()
     {
-        Debug.Log("Player has been killed!");
-        playerControls.enabled = false;
-        bodyControls.enabled = false;
-        randomMovt.enabled = false;
-        StartCoroutine(MoveTowardsPlayer());
-    }
-
-    private IEnumerator MoveTowardsPlayer()
-    {
-        Vector3 startPosition = transform.position;
-        Vector3 targetPosition = player.transform.position;
-
-        float elapsedTime = 0f;
-
-        while (elapsedTime < duration)
-        {
-            transform.position = Vector3.Lerp(startPosition, targetPosition, elapsedTime / duration);
-            elapsedTime += Time.deltaTime;
-            yield return null;
+        if (!playerBody.dead) {
+            Debug.Log("Player has been killed!");
+            playerBody.dead = true;
+            playerControls.enabled = false;
+            playerBody.enabled = false;
+            randomMovt.enabled = false;
+            // StartCoroutine(MoveTowardsPlayer());
         }
-
-        transform.position = targetPosition;
     }
+
+    // private IEnumerator MoveTowardsPlayer()
+    // {
+    //     Vector3 startPosition = transform.position;
+    //     Vector3 targetPosition = player.transform.position;
+
+    //     float elapsedTime = 0f;
+
+    //     while (elapsedTime < duration)
+    //     {
+    //         transform.position = Vector3.Lerp(startPosition, targetPosition, elapsedTime / duration);
+    //         elapsedTime += Time.deltaTime;
+    //         yield return null;
+    //     }
+
+    //     transform.position = targetPosition;
+    // }
 
     private void OnTriggerEnter(Collider other)
     {
@@ -68,9 +100,24 @@ public class DetectPlayer : MonoBehaviour
         {
             Debug.Log("Player entered trigger!");
 
-            if (animator != null)
+            // If the player is in the enemy's vision and within range, kill the player
+            if (animator != null && canSeePlayer)
             {
+                if (navAgent != null)
+                {
+                    navAgent.velocity = Vector3.zero; // Stop movement
+                }
+
+                // Rotate to face the player
+                transform.LookAt(player.transform.position);
+
+                KillPlayer();
                 animator.SetTrigger("Attack");
+
+                if (navAgent != null)
+                {
+                    navAgent.enabled = true; // Re-enable NavMeshAgent if needed
+                }
             }
             else
             {

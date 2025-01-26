@@ -39,7 +39,10 @@ public class SpotlightScript : MonoBehaviour
         RaycastHit hit;
         Vector3 startPosition = spotlight.transform.position;
 
-        if (Physics.Raycast(startPosition, direction, out hit, detectionRange))
+        // Create a layer mask that ignores the "Enemy" layer
+        int layerMask = ~LayerMask.GetMask("Enemy");
+
+        if (Physics.Raycast(startPosition, direction, out hit, detectionRange, layerMask))
         {
             // Check if the ray hit the player
             if (hit.collider.CompareTag("Player"))

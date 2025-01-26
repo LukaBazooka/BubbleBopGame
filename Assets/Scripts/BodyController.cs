@@ -20,6 +20,7 @@ public class BodyController : MonoBehaviour
     private bool isMoving = false; // Track if the player is moving
     private float stopTime; // Time when movement stopped
     public bool hidden = true;
+    public bool dead = false;
     public bool forceShown = false;
     private Renderer bubbleGuyRenderer;
     private Material bubbleGuyMaterial;
