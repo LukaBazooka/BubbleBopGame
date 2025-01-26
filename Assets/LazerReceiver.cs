@@ -11,6 +11,8 @@ public class LaserReceiver : MonoBehaviour
 
     private Renderer objectRenderer;
 
+    public GameObject doorOpenAudio;
+
     private void Start()
     {
         // Get the Renderer component of the GameObject
@@ -55,6 +57,7 @@ public class LaserReceiver : MonoBehaviour
             if (doorScript != null)
             {
                 doorScript.OpenDoor();
+                doorOpenAudio.SetActive(true);
                 Debug.Log("OpenDoor animation triggered.");
             }
             else
