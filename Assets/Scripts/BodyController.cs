@@ -79,16 +79,13 @@ public class BodyController : MonoBehaviour
             hidden = true;
         }
 
-        if (bubbleGuyRenderer != null)
+        if (hidden)
         {
-            if (hidden && fadeCoroutine == null)
-            {
-                fadeCoroutine = StartCoroutine(FadeOut());
-            }
-            else if (!hidden && fadeCoroutine == null)
-            {
-                fadeCoroutine = StartCoroutine(FadeIn());
-            }
+            bubbleGuyRenderer.material.SetFloat("_Add_Alpha", -0.6f);
+        }
+        else
+        {
+            bubbleGuyRenderer.material.SetFloat("_Add_Alpha", 0.2f);
         }
 
         Vector3 movementDirection = CalculateMovementDirection(); // Calculate movement direction
@@ -244,51 +241,5 @@ public class BodyController : MonoBehaviour
     {
         hidden = state;
         isHitByRay = !state; // Update the flag based on ray hit
-    }
-
-    IEnumerator FadeOut()
-    {
-        float duration = 0.2f; // Faster fade out
-        float elapsed = 0f;
-        float startAlpha = bubbleGuyRenderer.material.GetFloat("_Add_Alpha");
-        float targetAlpha = -0.6f; // Fully transparent
-
-        Debug.Log($"Starting FadeOut: startAlpha = {startAlpha}, targetAlpha = {targetAlpha}");
-
-        while (elapsed < duration)
-        {
-            elapsed += Time.deltaTime;
-            float newAlpha = Mathf.Lerp(startAlpha, targetAlpha, elapsed / duration);
-            bubbleGuyRenderer.material.SetFloat("_Add_Alpha", newAlpha);
-            Debug.Log($"FadeOut: newAlpha = {newAlpha}, elapsed = {elapsed}");
-            yield return null;
-        }
-
-        bubbleGuyRenderer.material.SetFloat("_Add_Alpha", targetAlpha);
-        Debug.Log("FadeOut complete");
-        fadeCoroutine = null;
-    }
-
-    IEnumerator FadeIn()
-    {
-        float duration = 0.2f; // Faster fade in
-        float elapsed = 0f;
-        float startAlpha = bubbleGuyRenderer.material.GetFloat("_Add_Alpha");
-        float targetAlpha = 0.3f; // Fully opaque
-
-        Debug.Log($"Starting FadeIn: startAlpha = {startAlpha}, targetAlpha = {targetAlpha}");
-
-        while (elapsed < duration)
-        {
-            elapsed += Time.deltaTime;
-            float newAlpha = Mathf.Lerp(startAlpha, targetAlpha, elapsed / duration);
-            bubbleGuyRenderer.material.SetFloat("_Add_Alpha", newAlpha);
-            Debug.Log($"FadeIn: newAlpha = {newAlpha}");
-            yield return null;
-        }
-
-        bubbleGuyRenderer.material.SetFloat("_Add_Alpha", targetAlpha);
-        Debug.Log("FadeIn complete");
-        fadeCoroutine = null;
     }
 } 
