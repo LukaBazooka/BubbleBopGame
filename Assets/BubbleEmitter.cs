@@ -18,7 +18,11 @@ public class BubbleEmitter : MonoBehaviour
         // Check if the left mouse button is being held
         if (Input.GetMouseButton(0))
         {
-            ShowArrowPointer();
+            if (Time.time - lastBubbleTime >= cooldown)
+            {
+                ShowArrowPointer();
+            }
+                
         }
 
         // Check for left mouse button release
