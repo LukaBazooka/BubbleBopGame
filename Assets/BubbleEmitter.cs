@@ -8,6 +8,8 @@ public class BubbleEmitter : MonoBehaviour
     public Transform shootPoint;   // Assign the shootPoint GameObject in the Inspector
     public float shootForce = 500f; // Adjust this for how fast the bubble shoots
     public GameObject arrowPointer; // Assign the arrow pointer GameObject in the Inspector
+    private float cooldown = 3f; // Cooldown duration in seconds
+    private float lastBubbleTime; // Tracks when the last bubble was launched
 
     void Update()
     {
@@ -21,7 +23,17 @@ public class BubbleEmitter : MonoBehaviour
         if (Input.GetMouseButtonUp(0))
         {
             HideArrowPointer();
-            LaunchBubble();
+
+            // Check if cooldown has elapsed
+            if (Time.time - lastBubbleTime >= cooldown)
+            {
+                LaunchBubble();
+                lastBubbleTime = Time.time; // Update the last bubble time
+            }
+            else
+            {
+                Debug.Log("On cooldown! Please wait.");
+            }
         }
     }
 
