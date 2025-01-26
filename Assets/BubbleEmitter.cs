@@ -25,27 +25,15 @@ public class BubbleEmitter : MonoBehaviour
             return;
         }
 
-        // Calculate the direction from the launcher to the mouse position
-        Vector3 mousePosition = Input.mousePosition;
-        mousePosition.z = Camera.main.WorldToScreenPoint(shootPoint.position).z; // Match depth of the shootPoint
-        Vector3 worldMousePosition = Camera.main.ScreenToWorldPoint(mousePosition);
+        // Instantiate the bubble at the shootPoint's position and rotation
+        GameObject bubble = Instantiate(bubblePrefab, shootPoint.position, shootPoint.rotation);
 
-        // Calculate the direction vector
-        Vector3 direction = (worldMousePosition - shootPoint.position);
-        direction.y = 0; // Ignore the Y-axis
-        direction = direction.normalized; // Normalize the direction to ensure consistent force
-
-        // Calculate rotation to face the direction
-        Quaternion rotation = Quaternion.LookRotation(direction);
-
-        // Instantiate the bubble at the shootPoint's position with the calculated rotation
-        GameObject bubble = Instantiate(bubblePrefab, shootPoint.position, rotation);
-
-        // Get the Rigidbody of the bubble and add force in the direction of the mouse
+        // Get the Rigidbody of the bubble and add force in the direction the shootPoint is facing
         Rigidbody bubbleRb = bubble.GetComponent<Rigidbody>();
         if (bubbleRb != null)
         {
-            bubbleRb.AddForce(direction * shootForce);
+            // Use the shootPoint's forward direction to determine the force direction
+            bubbleRb.AddForce(shootPoint.forward * shootForce);
         }
         else
         {

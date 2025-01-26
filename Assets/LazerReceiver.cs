@@ -4,21 +4,32 @@ using UnityEngine;
 
 public class LaserReceiver : MonoBehaviour
 {
-    // Assign the red and green materials in the Inspector
-    [SerializeField] private Material redMaterial;
-    [SerializeField] private Material greenMaterial;
+    [SerializeField] private Material redMaterial;   // Assign this in the Inspector
+    [SerializeField] private Material greenMaterial; // Assign this in the Inspector
+    [SerializeField] private GameObject wiresObject; // Assign the Wires GameObject in the Inspector
+    [SerializeField] private GameObject doorObject;  // Assign the Door GameObject in the Inspector
 
-    public Renderer objectRenderer;
+    private Renderer objectRenderer;
 
     private void Start()
     {
         // Get the Renderer component of the GameObject
         objectRenderer = GetComponent<Renderer>();
 
-        // Ensure the object starts with the red material
-        if (objectRenderer != null && redMaterial != null)
+        if (objectRenderer == null)
+        {
+            Debug.LogError("Renderer component not found on the GameObject!");
+            return;
+        }
+
+        // Set the initial material to red
+        if (redMaterial != null)
         {
             objectRenderer.material = redMaterial;
+        }
+        else
+        {
+            Debug.LogError("Red Material not assigned!");
         }
     }
 
@@ -26,14 +37,56 @@ public class LaserReceiver : MonoBehaviour
     {
         Debug.Log("LaserReceiver activated!");
 
-        // Change the material to green
+        // Change this object's material to green
         if (objectRenderer != null && greenMaterial != null)
         {
             objectRenderer.material = greenMaterial;
+            Debug.Log("LaserReceiver material changed to green.");
         }
         else
         {
-            Debug.LogError("Material or Renderer is not assigned!");
+            Debug.LogError("Green Material or Renderer is not assigned!");
+        }
+
+        // Trigger the "OpenDoor" animation on the door GameObject
+        if (doorObject != null)
+        {
+            Door doorScript = doorObject.GetComponent<Door>();
+            if (doorScript != null)
+            {
+                doorScript.OpenDoor();
+                Debug.Log("OpenDoor animation triggered.");
+            }
+            else
+            {
+                Debug.LogError("The specified door object does not have a Door script attached!");
+            }
+        }
+        else
+        {
+            Debug.LogError("Door object is not assigned in the Inspector!");
+        }
+
+        // Change the material of all child objects of the Wires GameObject
+        if (wiresObject != null)
+        {
+            foreach (Transform child in wiresObject.transform)
+            {
+                Renderer childRenderer = child.GetComponent<Renderer>();
+                if (childRenderer != null)
+                {
+                    childRenderer.material = greenMaterial;
+                    Debug.Log($"Changed material of child: {child.name} to green.");
+                }
+                else
+                {
+                    Debug.LogWarning($"Child: {child.name} does not have a Renderer component.");
+                }
+            }
+        }
+        else
+        {
+            Debug.LogError("Wires GameObject is not assigned in the Inspector!");
         }
     }
 }
