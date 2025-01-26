@@ -20,6 +20,7 @@ public class BodyController : MonoBehaviour
     private bool isMoving = false; // Track if the player is moving
     private float stopTime; // Time when movement stopped
     public bool hidden = true;
+    public bool forceShown = false;
     private Renderer bubbleGuyRenderer;
     private Material bubbleGuyMaterial;
     private Coroutine fadeCoroutine;
@@ -74,7 +75,7 @@ public class BodyController : MonoBehaviour
             bubbleGuyGeo.gameObject.SetActive(!hidden);
         }
 
-        if (!isHitByRay)
+        if (!isHitByRay && !forceShown)
         {
             hidden = true;
         }
