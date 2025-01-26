@@ -1,12 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.AI; // Ensure you have this namespace for NavMeshAgent
+using UnityEngine.AI;
+using UnityEngine.SceneManagement;
 
 public class DetectPlayer : MonoBehaviour
 {
-    public float visionRange = 10f; // How far the enemy can see
-    public Transform rayOrigin;    // The starting point for the raycast (e.g., enemy's eyes)
+    public float visionRange = 10f; 
+    public Transform rayOrigin;  
 
     private PlayerController playerControls;
 
@@ -16,14 +17,18 @@ public class DetectPlayer : MonoBehaviour
     private BodyController playerBody;
     public float duration = 2f;
     public RandomMovement randomMovt;
+    public GameObject popEffect;
 
-    private Animator animator; // Reference to the Animator component
-    private NavMeshAgent navAgent; // Reference to the NavMeshAgent component
-    private bool canSeePlayer = false; // This determines if the player is in the enemy's vision
+    private Animator animator;
+    private NavMeshAgent navAgent; 
+    private bool canSeePlayer = false;
+
+    public GameObject exclamationMark;
+
+    public GameObject deathUI;
 
     private void Start()
     {
-        // Get the Animator component attached to this GameObject
         animator = GetComponent<Animator>();
         if (animator == null)
         {
@@ -108,6 +113,8 @@ public class DetectPlayer : MonoBehaviour
                     navAgent.velocity = Vector3.zero; // Stop movement
                 }
 
+                exclamationMark.SetActive(true);
+
                 // Rotate to face the player
                 transform.LookAt(player.transform.position);
 
@@ -124,6 +131,27 @@ public class DetectPlayer : MonoBehaviour
                 Debug.LogWarning("Animator component is missing. Cannot trigger animation.");
             }
         }
+    }
+
+    public void StartDeathStuff()
+    {
+        player.SetActive(false);
+        Instantiate(popEffect, player.transform);
+        deathUI.SetActive(true);
+    }
+
+    public void RetryScene()
+    {
+        // Get the currently active scene
+        Scene currentScene = SceneManager.GetActiveScene();
+
+        // Reload the current scene
+        SceneManager.LoadScene(currentScene.name);
+    }
+
+    public void QuitToMenu()
+    {
+        SceneManager.LoadScene("MainMenu");
     }
 
     private void OnDrawGizmosSelected()
