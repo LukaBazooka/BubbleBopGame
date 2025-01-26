@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class MainMenu : MonoBehaviour
 {
@@ -10,7 +11,31 @@ public class MainMenu : MonoBehaviour
 
     private bool isWalking = false; // Track whether the character is walking
 
-    void Start()
+    public GameObject targetObject;
+
+    public void ShowTarget()
+    {
+        if (targetObject != null)
+        {
+            targetObject.SetActive(true);
+        }
+    }
+
+    public void HideTarget()
+    {
+        if (targetObject != null)
+        {
+            targetObject.SetActive(false); // Enable the GameObject
+        }
+    }
+
+    public void Quit()
+    {
+        // Quit the application
+        Application.Quit();
+    }
+
+        void Start()
     {
         // Ensure the character starts with the idle animation
         if (animator != null)
@@ -31,6 +56,19 @@ public class MainMenu : MonoBehaviour
             animator.Play("walking"); // Replace "Walk" with the actual walk animation state name
         }
     }
+
+    public void LoadSceneByName()
+    {
+        StartCoroutine(LoadSceneAfterDelay());
+    }
+
+    private IEnumerator LoadSceneAfterDelay()
+    {
+        yield return new WaitForSeconds(3); // Wait for the specified delay
+        SceneManager.LoadScene("Level__2");
+    }
+
+
 
     void Update()
     {
