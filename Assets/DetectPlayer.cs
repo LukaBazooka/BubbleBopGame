@@ -24,8 +24,11 @@ public class DetectPlayer : MonoBehaviour
     private bool canSeePlayer = false;
 
     public GameObject exclamationMark;
+    public GameObject questionMark;
 
     public GameObject deathUI;
+
+    public AudioSource deathAudio;
 
     private void Start()
     {
@@ -61,6 +64,15 @@ public class DetectPlayer : MonoBehaviour
         else {
             canSeePlayer = false;
         }
+
+      //  if (canSeePlayer)
+      //  {
+      //      questionMark.SetActive(true);
+      //  }
+      //  else
+      //  {
+      //      questionMark.SetActive(false);
+      //  }
     }
 
     // Move towards the player if they are not hidden
@@ -78,6 +90,7 @@ public class DetectPlayer : MonoBehaviour
             playerControls.enabled = false;
             playerBody.enabled = false;
             randomMovt.enabled = false;
+            
             // StartCoroutine(MoveTowardsPlayer());
         }
     }
@@ -112,7 +125,7 @@ public class DetectPlayer : MonoBehaviour
                 {
                     navAgent.velocity = Vector3.zero; // Stop movement
                 }
-
+                questionMark.SetActive(false);
                 exclamationMark.SetActive(true);
 
                 // Rotate to face the player
@@ -138,6 +151,7 @@ public class DetectPlayer : MonoBehaviour
         player.SetActive(false);
         Instantiate(popEffect, player.transform);
         deathUI.SetActive(true);
+        deathAudio.Play();
     }
 
     public void RetryScene()
