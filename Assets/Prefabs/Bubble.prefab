@@ -516,6 +516,8 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 8
   scaleDuration: 0.5
+  bubblePopSFX: {fileID: 8901789627465563442, guid: a3042cc7a5d67bf438974af53f86593d,
+    type: 3}
 --- !u!54 &2443484541181949779
 Rigidbody:
   m_ObjectHideFlags: 0

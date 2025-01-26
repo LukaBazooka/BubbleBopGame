@@ -11,6 +11,8 @@ public class BubbleEmitter : MonoBehaviour
     private float cooldown = 3f; // Cooldown duration in seconds
     private float lastBubbleTime; // Tracks when the last bubble was launched
 
+    public AudioSource bubbleAudio;
+
     void Update()
     {
         // Check if the left mouse button is being held
@@ -63,6 +65,8 @@ public class BubbleEmitter : MonoBehaviour
 
         // Instantiate the bubble at the shootPoint's position and rotation
         GameObject bubble = Instantiate(bubblePrefab, shootPoint.position, shootPoint.rotation);
+
+        bubbleAudio.Play();
 
         // Get the Rigidbody of the bubble and add force in the direction the shootPoint is facing
         Rigidbody bubbleRb = bubble.GetComponent<Rigidbody>();

@@ -22,6 +22,8 @@ public class Bubble : MonoBehaviour
     private bool isScaling = true;
     private Transform meshTransform;
 
+    public GameObject bubblePopSFX;
+
     void Start()
     {
         // Get the transform of the mesh (assumes the mesh is a child or the same GameObject)
@@ -84,6 +86,7 @@ public class Bubble : MonoBehaviour
         if (popEffect != null)
         {
             Instantiate(popEffect, transform.position, Quaternion.identity);
+            Instantiate(bubblePopSFX, transform.position, Quaternion.identity);
         }
 
         // Destroy the bubble GameObject
