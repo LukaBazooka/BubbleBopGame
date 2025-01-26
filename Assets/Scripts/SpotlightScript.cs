@@ -3,6 +3,7 @@ using System.Collections;
 
 public class SpotlightScript : MonoBehaviour
 {
+    public bool playerDetected = false;
     private Light spotlight; // Reference to the spotlight
     public float detectionRange = 200f; // Range of the light detection
     public int numberOfRays = 50; // Total number of rays
@@ -16,6 +17,9 @@ public class SpotlightScript : MonoBehaviour
 
     void Update()
     {
+        // Reset player detection at the start of each frame
+        playerDetected = false;
+
         // Calculate the angle step between each ray
         float angleStep = (angleOffset * 2) / (numberOfRays - 1);
 
@@ -44,6 +48,7 @@ public class SpotlightScript : MonoBehaviour
                 if (player != null)
                 {
                     player.SetHidden(false);
+                    playerDetected = true;
                 }
             }
 
