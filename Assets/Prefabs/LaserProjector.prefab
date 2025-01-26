@@ -45,6 +45,7 @@ GameObject:
   - component: {fileID: 3687665333550870248}
   - component: {fileID: 1352627342125989775}
   - component: {fileID: 7660926527086232218}
+  - component: {fileID: 6134535164120482341}
   m_Layer: 0
   m_Name: LaserProjector
   m_TagString: Untagged
@@ -269,6 +270,22 @@ LineRenderer:
   m_UseWorldSpace: 1
   m_Loop: 0
   m_ApplyActiveColorSpace: 1
+--- !u!114 &6134535164120482341
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5778470990862314572}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f299b8433bed33b48b68b929cc72a4b2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  lineRenderer: {fileID: 7660926527086232218}
+  playerLayer:
+    serializedVersion: 2
+    m_Bits: 256
 --- !u!1001 &3098076298162473473
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -7,13 +7,37 @@ public class BubbleEmitter : MonoBehaviour
     public GameObject bubblePrefab; // Assign your bubble prefab in the Inspector
     public Transform shootPoint;   // Assign the shootPoint GameObject in the Inspector
     public float shootForce = 500f; // Adjust this for how fast the bubble shoots
+    public GameObject arrowPointer; // Assign the arrow pointer GameObject in the Inspector
 
     void Update()
     {
-        // Check for left mouse button press
-        if (Input.GetMouseButtonDown(0))
+        // Check if the left mouse button is being held
+        if (Input.GetMouseButton(0))
         {
+            ShowArrowPointer();
+        }
+
+        // Check for left mouse button release
+        if (Input.GetMouseButtonUp(0))
+        {
+            HideArrowPointer();
             LaunchBubble();
+        }
+    }
+
+    void ShowArrowPointer()
+    {
+        if (arrowPointer != null && !arrowPointer.activeSelf)
+        {
+            arrowPointer.SetActive(true);
+        }
+    }
+
+    void HideArrowPointer()
+    {
+        if (arrowPointer != null && arrowPointer.activeSelf)
+        {
+            arrowPointer.SetActive(false);
         }
     }
 
