@@ -12,7 +12,6 @@ public class SpotlightScript : MonoBehaviour
     {
         // Get the Light component attached to the same GameObject
         spotlight = GetComponent<Light>();
-        StartCoroutine(CastRays());
     }
 
     void Update()
@@ -44,7 +43,7 @@ public class SpotlightScript : MonoBehaviour
                 BodyController player = hit.collider.GetComponent<BodyController>();
                 if (player != null)
                 {
-                    player.hidden = false;
+                    player.SetHidden(false);
                 }
             }
 
@@ -55,17 +54,6 @@ public class SpotlightScript : MonoBehaviour
         {
             // Visualise the full ray length if no collision
             Debug.DrawRay(startPosition, direction * detectionRange, Color.red);
-        }
-    }
-
-    IEnumerator CastRays()
-    {
-        while (true)
-        {
-            // Cast your rays here
-            // ...
-
-            yield return new WaitForSeconds(0.1f); // Adjust the delay as needed
         }
     }
 }

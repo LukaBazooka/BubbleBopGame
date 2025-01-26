@@ -1,4 +1,6 @@
 using UnityEngine;
+using System;
+using System.Collections;
 
 public class BodyController : MonoBehaviour
 {
@@ -18,15 +20,30 @@ public class BodyController : MonoBehaviour
     private bool isMoving = false; // Track if the player is moving
     private float stopTime; // Time when movement stopped
     public bool hidden = true;
+    private Renderer bubbleGuyRenderer;
+    private Material bubbleGuyMaterial;
+    private Coroutine fadeCoroutine;
+    private bool isHitByRay = false; // Flag to track ray hits
 
     // Capture original positions at start
     void Start()
     {
-        // Find the child named "T-Pose" and get the Animator component
+        // Find the "T-Pose" child first
         Transform tPoseChild = transform.Find("T-Pose");
         if (tPoseChild != null)
         {
             animator = tPoseChild.GetComponent<Animator>();
+
+            // Now find "bubbleGuy_geo" under "T-Pose"
+            Transform bubbleGuyGeo = tPoseChild.Find("bubbleGuy_geo");
+            if (bubbleGuyGeo != null)
+            {
+                bubbleGuyRenderer = bubbleGuyGeo.GetComponent<Renderer>();
+                if (bubbleGuyRenderer != null)
+                {
+                    bubbleGuyMaterial = bubbleGuyRenderer.material;
+                }
+            }
         }
 
         originalPositions = new Vector3[bones.Length];
@@ -51,6 +68,29 @@ public class BodyController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        Transform bubbleGuyGeo = transform.Find("T-Pose/bubbleGuy_geo");
+        if (bubbleGuyGeo != null)
+        {
+            bubbleGuyGeo.gameObject.SetActive(!hidden);
+        }
+
+        if (!isHitByRay)
+        {
+            hidden = true;
+        }
+
+        if (bubbleGuyRenderer != null)
+        {
+            if (hidden && fadeCoroutine == null)
+            {
+                fadeCoroutine = StartCoroutine(FadeOut());
+            }
+            else if (!hidden && fadeCoroutine == null)
+            {
+                fadeCoroutine = StartCoroutine(FadeIn());
+            }
+        }
+
         Vector3 movementDirection = CalculateMovementDirection(); // Calculate movement direction
         bool currentlyMoving = movementDirection.sqrMagnitude > 0.01f;
 
@@ -82,6 +122,9 @@ public class BodyController : MonoBehaviour
         {
             ApplyMovementEffects(movementDirection);
         }
+
+        // Reset the flag for the next frame
+        isHitByRay = false;
     }
 
     private void ApplyProceduralEffects()
@@ -186,5 +229,66 @@ public class BodyController : MonoBehaviour
             Quaternion targetRotation = Quaternion.LookRotation(direction);
             transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * resetSpeed);
         }
+    }
+
+    void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("SpotlightRay")) // Ensure the rays have this tag
+        {
+            hidden = false;
+            isHitByRay = true;
+        }
+    }
+
+    public void SetHidden(bool state)
+    {
+        hidden = state;
+        isHitByRay = !state; // Update the flag based on ray hit
+    }
+
+    IEnumerator FadeOut()
+    {
+        float duration = 0.2f; // Faster fade out
+        float elapsed = 0f;
+        float startAlpha = bubbleGuyRenderer.material.GetFloat("_Add_Alpha");
+        float targetAlpha = -0.6f; // Fully transparent
+
+        Debug.Log($"Starting FadeOut: startAlpha = {startAlpha}, targetAlpha = {targetAlpha}");
+
+        while (elapsed < duration)
+        {
+            elapsed += Time.deltaTime;
+            float newAlpha = Mathf.Lerp(startAlpha, targetAlpha, elapsed / duration);
+            bubbleGuyRenderer.material.SetFloat("_Add_Alpha", newAlpha);
+            Debug.Log($"FadeOut: newAlpha = {newAlpha}, elapsed = {elapsed}");
+            yield return null;
+        }
+
+        bubbleGuyRenderer.material.SetFloat("_Add_Alpha", targetAlpha);
+        Debug.Log("FadeOut complete");
+        fadeCoroutine = null;
+    }
+
+    IEnumerator FadeIn()
+    {
+        float duration = 0.2f; // Faster fade in
+        float elapsed = 0f;
+        float startAlpha = bubbleGuyRenderer.material.GetFloat("_Add_Alpha");
+        float targetAlpha = 0.3f; // Fully opaque
+
+        Debug.Log($"Starting FadeIn: startAlpha = {startAlpha}, targetAlpha = {targetAlpha}");
+
+        while (elapsed < duration)
+        {
+            elapsed += Time.deltaTime;
+            float newAlpha = Mathf.Lerp(startAlpha, targetAlpha, elapsed / duration);
+            bubbleGuyRenderer.material.SetFloat("_Add_Alpha", newAlpha);
+            Debug.Log($"FadeIn: newAlpha = {newAlpha}");
+            yield return null;
+        }
+
+        bubbleGuyRenderer.material.SetFloat("_Add_Alpha", targetAlpha);
+        Debug.Log("FadeIn complete");
+        fadeCoroutine = null;
     }
 } 
