@@ -9,28 +9,12 @@ public class DetectPlayer : MonoBehaviour
 
     public PlayerController playerControls;
 
+    public SpotlightScript spotlight;
+
     private void Update()
     {
-        DetectPlayerDeath();
-    }
-
-    private void DetectPlayerDeath()
-    {
-        // Raycast from the enemy's position forward
-        RaycastHit hit;
-        if (Physics.Raycast(rayOrigin.position, rayOrigin.forward, out hit, visionRange))
-        {
-            // Check if the ray hit the player
-            if (hit.collider.gameObject.layer == LayerMask.NameToLayer("Player"))
-            {
-                // Player detected, call KillPlayer
-                KillPlayer();
-            }
-            else if (hit.collider.gameObject.layer == LayerMask.NameToLayer("Walls"))
-            {
-                // Ray hits a wall, player is not detected
-                Debug.Log("Player hidden behind a wall!");
-            }
+        if (spotlight.playerDetected) {
+            KillPlayer();
         }
     }
 
